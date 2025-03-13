@@ -33,6 +33,14 @@ const ProductList = () => {
         setSelectedProduct(product);
     };
 
+
+    // const [Toast, setToast] = useState({
+    //     text: 'success',
+    //     status: true,
+    //     bg: 'green',
+
+    // });
+
     const handleAddToCart = (product) => {
         addToCart(product);
     }
@@ -49,7 +57,7 @@ const ProductList = () => {
 
     return (
         <>
-
+           {/* {toast && <Toast text={toast.text} bg={toast.bg} />}  */}
             <div className='relative'>
                 {/* Slider */}
                 <div>
@@ -114,17 +122,17 @@ const ProductList = () => {
                 {/* <h1 className='text-3xl font-bold mb-4 text-center'>
                     Product list
                 </h1> */}
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-5 '>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-5 items-center'>
                     {products.map((product) => (
-                        <div key={product.id} className=' p-4 rounded-lg shadow-md'>
+                        <div key={product.id} className=' p-4 rounded-lg shadow-md '>
                             <Link to={`/products/${product.id}`} onClick={() => handleProductClick(product)}>
                                 {product.image &&
                                     <img src={product.image}
                                         alt={product.title}
                                         className='rounded-2xl '
-                                        style={{ width: '300px', height: '300px', textAlign: 'center', margin: '0 auto' }}
+                                        style={{ width: '200px', height: '250px', textAlign: 'center', margin: '0 auto' }}
                                     />}
-                                <div className='text-center font-bold text-xl'> {product.title}</div>
+                                <div className='text-center font-bold text-xl my-5'> {product.title}</div>
 
                                 <div className='flex justify-between  items-center mt-2 mx-32'>
                                     <div className='font-bold'>
@@ -137,13 +145,15 @@ const ProductList = () => {
                                     </div>
                                 </div>
 
-                                <button className='bg-green-500 ms-20 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5'>
+                                <button
+                                    className='bg-green-500 ms-20 hover:bg-green-700
+                                  text-white font-bold py-2 px-2 rounded my-5'>
                                     More Details
                                 </button>
                             </Link>
 
                             <button onClick={() => handleAddToCart(product)}
-                                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-5'>
+                                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mx-5'>
                                 Add To Cart
                             </button>
                         </div>

@@ -39,7 +39,9 @@ const AuthDetails = () => {
                     className='text-red-600'>Sign Out</button>
                 </>
             ) : (
-                <p>Hello,Sign in</p>
+                <p>Hello,
+                    <br />
+                    Sign in</p>
             )}
         </div>
     );

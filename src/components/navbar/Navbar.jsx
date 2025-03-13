@@ -11,10 +11,10 @@ import { CiSearch } from "react-icons/ci";
 
 const Navbar = () => {
     return (
-        <div className='flex justify-between items-center bg-[#131921] py-4 px-10  gap-6 text-white'>
+        <div className='flex justify-between items-center bg-[#131921] py-4 px-10  gap-1 text-white'>
             <Link to="/">
                 <img src={logo} alt=""
-                    className="w-28 h-10 object-cover
+                    className="w-28 h-10 object-cover me-2
                     rounded-full" />
             </Link>
 
@@ -36,7 +36,8 @@ const Navbar = () => {
             </div>
 
 
-            <div className='ml-auto  flex gap-2 hover:text-orange-300 transition-all duration-300 ease-in-out'>
+          
+            <div className='ml-auto  flex me-5 hover:text-orange-300 transition-all duration-300 ease-in-out'>
                 
                 <Link to="/LoginPage">
                 <AuthDetails />
@@ -51,6 +52,7 @@ const Navbar = () => {
                 <FaCartArrowDown />
                 Cart
             </Link>
+           
 
         </div>
     )
