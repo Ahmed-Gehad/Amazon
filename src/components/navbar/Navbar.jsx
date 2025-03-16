@@ -1,61 +1,66 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { FaCartArrowDown } from "react-icons/fa";
-import AuthDetails from '../Account/AuthDetails';
-import logo from '../../assets/logo.png';
-
-import { CiLocationOn } from "react-icons/ci";
-import { CiSearch } from "react-icons/ci";
-
-
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { FaCartArrowDown, FaBars } from "react-icons/fa";
+import { CiLocationOn, CiSearch } from "react-icons/ci";
+import AuthDetails from "../Account/AuthDetails";
+import { ProductContext } from "../product/ProductContext";
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
+    const { cart, setSearchQuery } = useContext(ProductContext);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [search, setSearch] = useState("");
+
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+        setSearchQuery(e.target.value);
+    };
+
     return (
-        <div className='flex justify-between items-center bg-[#131921] py-4 px-10  gap-1 text-white'>
-            <Link to="/">
-                <img src={logo} alt=""
-                    className="w-28 h-10 object-cover me-2
-                    rounded-full" />
-            </Link>
+        <nav className="bg-[#131921] text-white py-3 px-5 shadow-md sticky top-0 z-50">
+            <div className="container mx-auto flex justify-between items-center">
+                {/* 🔹 Logo */}
+                <Link to="/" className="flex items-center gap-2">
+                    <img src={logo} alt="Amazon" className="w-28 h-10 object-cover rounded-full" />
+                </Link>
 
-            <div className='flex items-center gap-2 hover:cursor-pointer hover:text-orange-300 transition-all duration-300 ease-in-out'>
-                <CiLocationOn />
-                <div>
-                    <p className='text-sm'>Deliver to</p>
-                    <p className='text-sm'>Egypt</p>
+                {/*  Search Bar */}
+                <div className="flex-grow mx-5">
+                    <div className="relative flex items-center bg-white rounded-lg shadow-md w-full">
+                        <input
+                            type="text"
+                            placeholder="Search Amazon.eg"
+                            value={search}
+                            onChange={handleSearch}
+                            className="w-full text-black px-4 py-2 rounded-lg focus:outline-none"
+                        />
+                        <button className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-orange-400 p-2 rounded-md hover:bg-orange-500 transition">
+                            <CiSearch className="text-white text-xl" />
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div className='bg-white p-2 rounded-lg  w-96 flex justify-between ms-auto'>
-                <input type="text"
-                    placeholder='Search Amazon.eg'
-                    className='text-black outline-none w-full'
-                />
-                <button className=' bg-orange-300 p-2 rounded-lg '>
-                    <CiSearch className='text-black ' />
-                </button>
-            </div>
 
-
-          
-            <div className='ml-auto  flex me-5 hover:text-orange-300 transition-all duration-300 ease-in-out'>
-                
+                {/*  User Account */}
                 <Link to="/LoginPage">
-                <AuthDetails />
-                    
+                    <AuthDetails />
+                </Link>
+                <Link to="/CheckoutPage" className="px-3">
+                    <h5 className="text-lg font-medium hover:text-orange-300 transition">Order</h5>
+                </Link>
+
+                {/*  Cart */}
+                <Link to="/Cart" className="relative flex items-center hover:text-orange-300 transition">
+                    <FaCartArrowDown className="text-2xl" />
+                    {cart.length > 0 && (
+                        <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+                            {cart.length}
+                        </span>
+                    )}
+                    <span className="ml-2 hidden md:inline">Cart</span>
                 </Link>
             </div>
-            
-            <Link to="/CheckoutPage" className=' hover:text-orange-300 transition-all duration-300 ease-in-out'>
-                Orders
-            </Link>
-            <Link to="/Cart" className='ml-5 flex gap-2 align-center items-center hover:text-orange-300 transition-all duration-300 ease-in-out'>
-                <FaCartArrowDown />
-                Cart
-            </Link>
-           
+        </nav>
+    );
+};
 
-        </div>
-    )
-}
-
-export default Navbar
+export default Navbar;

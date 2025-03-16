@@ -1,18 +1,15 @@
-import React, { useContext, useRef } from 'react'
-
-// Import Swiper React components
+import React, { useContext } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
-// import required modules
 import { Autoplay } from 'swiper/modules';
 
-// Import Images
+// استيراد التوست لإشعارات التأكيد
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+// استيراد الصور
 import home1 from "../../assets/home1.jpg";
 import home2 from "../../assets/home2.jpg";
 import home3 from "../../assets/home3.jpg";
@@ -23,145 +20,105 @@ import home7 from "../../assets/home7.jpg";
 
 import { ProductContext } from './ProductContext';
 import { Link } from 'react-router-dom';
-
 import { CiStar } from "react-icons/ci";
+import { FaShoppingCart, FaInfoCircle } from "react-icons/fa";
 
 const ProductList = () => {
-    const { selectedProduct } = useContext(ProductContext);
-    const { products, setSelectedProduct, addToCart } = useContext(ProductContext);
+    const { filteredProducts, setSelectedProduct, addToCart } = useContext(ProductContext);
+
     const handleProductClick = (product) => {
         setSelectedProduct(product);
     };
 
-
-    // const [Toast, setToast] = useState({
-    //     text: 'success',
-    //     status: true,
-    //     bg: 'green',
-
-    // });
-
     const handleAddToCart = (product) => {
         addToCart(product);
-    }
-
-
-    const progressCircle = useRef(null);
-    const progressContent = useRef(null);
-    const onAutoplayTimeLeft = (s, time, progress) => {
-        progressCircle.current.style.setProperty('--progress', 1 - progress);
-        progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
+        toast.success(`${product.title} added to cart!`, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+        });
     };
-
-
 
     return (
         <>
-           {/* {toast && <Toast text={toast.text} bg={toast.bg} />}  */}
-            <div className='relative'>
-                {/* Slider */}
-                <div>
-                    <Swiper
-                        spaceBetween={30}
-                        centeredSlides={true}
-                        autoplay={{
-                            delay: 2500,
-                            disableOnInteraction: false,
-                        }}
-                        modules={[Autoplay]}
-                        onAutoplayTimeLeft={onAutoplayTimeLeft}
-                        className="mySwiper"
-                    >
-                        {/* الشرائح */}
-                        <SwiperSlide>
-                            <img className="image-fade" src={home1} alt="User 1" />
+            {/*  السلايدر */}
+            <div className="w-full max-w-screen-xl mx-auto">
+                <Swiper
+                    spaceBetween={10}
+                    centeredSlides={true}
+                    autoplay={{ delay: 2500, disableOnInteraction: false }}
+                    modules={[Autoplay]}
+                    className="rounded-xl overflow-hidden shadow-lg"
+                >
+                    {[home1, home2, home3, home4, home5, home6, home7].map((image, index) => (
+                        <SwiperSlide key={index} className="flex justify-center items-center p-2">
+                            <img
+                                className=" object-contain transition-all duration-500 hover:scale-105"
+                                style={{ width: "100%"  }}
+                                src={image}
+                                alt={`Slide ${index + 1}`}
+                            />
                         </SwiperSlide>
-                        <SwiperSlide>
-                            <img className="image-fade" src={home2} alt="User 2" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img className="image-fade" src={home3} alt="User 2" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img className="image-fade" src={home4} alt="User 2" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img className="image-fade" src={home5} alt="User 2" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img className="image-fade" src={home6} alt="User 2" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img className="image-fade" src={home7} alt="User 2" />
-                        </SwiperSlide>
-
-
-                        {/* دايره العد*/}
-                        <div className="autoplay-progress absolute bottom-5 right-5 flex items-center gap-2">
-                            <svg className="w-8 h-8 text-orange-400" viewBox="0 0 48 48" ref={progressCircle}>
-                                <circle
-                                    className="text-gray-600"
-                                    cx="24"
-                                    cy="24"
-                                    r="20"
-                                    strokeWidth="4"
-                                    fill="none"
-                                    strokeDasharray="125.6"
-                                    strokeDashoffset="125.6"
-                                    style={{ stroke: "var(--progress)" }}
-                                />
-                            </svg>
-                            <span ref={progressContent} className="text-orange-400 font-bold"></span>
-                        </div>
-                    </Swiper>
-                </div>
-
-
-            </div>
-            <div className='absolute top-80 left-0 w-full h-full  z-10'>
-                {/* <h1 className='text-3xl font-bold mb-4 text-center'>
-                    Product list
-                </h1> */}
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-5 items-center'>
-                    {products.map((product) => (
-                        <div key={product.id} className=' p-4 rounded-lg shadow-md '>
-                            <Link to={`/products/${product.id}`} onClick={() => handleProductClick(product)}>
-                                {product.image &&
-                                    <img src={product.image}
-                                        alt={product.title}
-                                        className='rounded-2xl '
-                                        style={{ width: '200px', height: '250px', textAlign: 'center', margin: '0 auto' }}
-                                    />}
-                                <div className='text-center font-bold text-xl my-5'> {product.title}</div>
-
-                                <div className='flex justify-between  items-center mt-2 mx-32'>
-                                    <div className='font-bold'>
-                                        {product.price}$
-                                    </div>
-
-                                    <div className='font-bold flex items-center gap-1'>
-                                        {product.rating && product.rating.rate}
-                                        <CiStar />
-                                    </div>
-                                </div>
-
-                                <button
-                                    className='bg-green-500 ms-20 hover:bg-green-700
-                                  text-white font-bold py-2 px-2 rounded my-5'>
-                                    More Details
-                                </button>
-                            </Link>
-
-                            <button onClick={() => handleAddToCart(product)}
-                                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mx-5'>
-                                Add To Cart
-                            </button>
-                        </div>
                     ))}
-                </div>
+                </Swiper>
             </div>
+
+            {/*  قائمة المنتجات */}
+            <div className='container mx-auto px-5 mt-10'>
+                <h2 className='text-3xl font-bold text-center mb-8 text-gray-800'>🛍️ Our Products</h2>
+
+                {filteredProducts.length === 0 ? (
+                    <p className="text-center text-gray-500 text-lg">No products found.</p>
+                ) : (
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr'>
+                        {filteredProducts.map((product) => (
+                            <div key={product.id}
+                                className='p-5 bg-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:scale-105 
+                                min-h-[450px] flex flex-col border border-gray-200'>
+
+                                {/*  صورة المنتج */}
+                                <Link to={`/products/${product.id}`} onClick={() => handleProductClick(product)} className="flex-1">
+                                    <div className="w-full h-60 flex items-center justify-center">
+                                        <img src={product.image} alt={product.title}
+                                            className='max-w-full max-h-full object-contain rounded-lg transition-transform duration-300 hover:scale-110 cursor-pointer'
+                                        />
+                                    </div>
+                                    <h3 className='text-lg font-semibold mt-4 text-gray-700 text-center'>{product.title}</h3>
+
+                                    {/*  السعر والتقييم */}
+                                    <div className='flex justify-between items-center mt-2'>
+                                        <span className='text-xl font-bold text-orange-500'>{product.price}$</span>
+                                        <div className='flex items-center text-yellow-500 font-bold'>
+                                            {product.rating && product.rating.rate} <CiStar />
+                                        </div>
+                                    </div>
+                                </Link>
+
+                                {/*  أزرار الإجراءات */}
+                                <div className="mt-4 flex gap-2">
+                                    <Link to={`/products/${product.id}`}
+                                        className='flex-1 bg-green-500 hover:bg-green-600 text-white text-center font-semibold py-2 rounded-md transition flex items-center justify-center gap-2'>
+                                        <FaInfoCircle /> More Details
+                                    </Link>
+                                    <button onClick={() => handleAddToCart(product)}
+                                        className='flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition flex items-center justify-center gap-2'>
+                                        <FaShoppingCart /> Add To Cart
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/*  إشعارات التوست */}
+            <ToastContainer />
         </>
     )
 }
 
-export default ProductList
+export default ProductList;
