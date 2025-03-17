@@ -46,9 +46,10 @@ const ProductDetails = () => {
           <img
             src={selectedProduct.image}
             alt={selectedProduct.title}
-            className="w-[450px] h-[450px] object-cover rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
+            className='max-w-full max-h-full object-contain rounded-lg transition-transform duration-300 hover:scale-110 cursor-pointer'
             onClick={() => setIsFullScreen(true)}
           />
+          
         </div>
 
         {/* تفاصيل المنتج */}
